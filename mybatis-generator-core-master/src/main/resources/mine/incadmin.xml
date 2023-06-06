@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<generatorConfiguration>
+    <!---Mybatis上下文-->
+    <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 当表名或者字段名为SQL关键字的时候，可以设置"autoDelimitKeywords"属性为true -->
+        <property name="autoDelimitKeywords" value="false" />
+        <!-- 自定义分页 -->
+        <plugin type="com.inc.generator.plugins.PaginationPlugin" />
+        <!--生成@Mapper注解-->
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+        <!-- 自定义查询指定字段  -->
+<!--        <plugin type="org.mybatis.generator.custom.field.FieldsPlugin" />-->
+        <!-- 此处是将Example改名为Criteria 当然 想改成什么都行~    -->
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$" />
+            <property name="replaceString" value="Criteria" />
+        </plugin>
+        <!-- 此处是将BookMapper.xml改名为BookDao.xml -->
+        <!--        <plugin type="com.inc.generator.plugins.rename.RenameMapperXmlPlugin">-->
+        <!--            <property name="replaceString" value="Dao" />-->
+        <!--        </plugin>-->
+        <!-- 此处是将BookMapper改名为BookDao 接口-->
+        <plugin type="com.inc.generator.plugins.rename.RenameMapperPlugin">
+            <property name="replaceString" value="Dao" />
+        </plugin>
+        <plugin type="com.inc.generator.plugins.ServiceAndControllerGeneratorPlugin" >
+            <property name="author" value="xty"/>
+            <property name="targetProject" value="src/generate/java"/>
+            <property name="servicePackage" value="com.inc.admin.service.biz"/>
+            <property name="serviceImplPackage" value="com.inc.admin.service.biz.impl"/>
+            <property name="controllerPackage" value="com.inc.admin.controller.biz"/>
+            <!--UserService,该值则为Service-->
+            <property name="serviceSuffix" value="Service"/>
+            <!--&lt;!&ndash;Service接口的父接口&ndash;&gt;-->
+            <!--<property name="superServiceInterface" value="org.aurochsframework.boot.commons.service.GeneralService"/>-->
+            <!--&lt;!&ndash;ServiceImpl的父类&ndash;&gt;-->
+            <!--<property name="superServiceImpl" value="org.aurochsframework.boot.commons.service.AbstractGeneralService"/>-->
+            <!--&lt;!&ndash;controller的父类接口&ndash;&gt;-->
+            <!--<property name="superController" value="org.aurochsframework.boot.commons.controller.GeneralCrudController"/>-->
+        </plugin>
+        <plugin type="com.inc.generator.plugins.VueGenerator" >
+        </plugin>
+        <!--自定义添加注释-->
+        <commentGenerator type="com.inc.generator.plugins.CustomCommentGenerator">
+            <property name="addRemarkComments" value="true"/>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+            <property name="author" value="xty"/>
+        </commentGenerator>
+        <!--配置数据库的链接信息-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/admi?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=UTC"
+                        userId="root"
+                        password="010917">
+            <!-- 设置 useInformationSchema 属性为 true -->
+            <property name="useInformationSchema" value="true" />
+        </jdbcConnection>
+        <!--默认为false，把JDBC DECIMAL 和NUMERIC类型解析为Integer，为true时把JDBC DECIMAL 和NUMERIC类型解析为java.math.BigDecimal-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--实体类生成信息-->
+        <javaModelGenerator targetPackage="com.inc.admin.domain.biz" targetProject="src/generate/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <!--继承父类（里面有分页信息）-->
+            <property name="rootClass" value="com.inc.admin.domain.sys.BaseEntity"/>
+        </javaModelGenerator>
+        <!--mybatis 的xml文件地址-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/generate/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--mybatis的mapper接口-->
+        <javaClientGenerator targetPackage="com.inc.admin.dao.biz" targetProject="src/generate/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--要生成的表结构-->
+        <table tableName="users" domainObjectName="Users"/>
+        <!--要生成的表结构-->
+        <table tableName="goods" domainObjectName="Goods"/>
+
+    </context>
+
+</generatorConfiguration>

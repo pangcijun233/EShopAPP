@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/admi?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: "010917"
+app:
+  #服务器配置
+  filePath: E:/ChromeDownload/admin/uploadFiles/
+  #计数文件路径
+  countFilePath: E:/ChromeDownload/admin/countFiles
+  pre: /files
